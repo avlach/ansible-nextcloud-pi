@@ -1,0 +1,11 @@
+---
+- name: Installing Web Server
+  yum:
+    name: apache2
+    state: latest
+
+- name: Web Server Installed and Starting
+  service:
+    name: apache2
+    state: started
+    enabled: yes

@@ -1,0 +1,42 @@
+---
+# - name: extract installer
+#   unarchive:
+#     src: "https://download.nextcloud.com/server/releases/latest-{{ nextcloud_major_version }}.tar.bz2"
+#     dest: /var/www/html/
+#     remote_src: True
+#     owner: www-data
+#     group: www-data
+
+- name: Create Data Directory
+  file:
+    dest: /var/www/html/nextcloud/data
+    owner: www-data
+    group: www-data
+    mode: 0775
+    state: directory
+
+- name: Create NextCloud database
+  mysql_db:
+    name: nextcloud
+    login_user: nextclouduser
+    login_password: "{{ mysql_password }}"
+    state: present
+
+# - name: Create NextCloud database user
+#   mysql_user:
+#     name: nextclouduser
+#     password: "{{ mysql_password }}"
+#     priv: nextcloud.*:ALL
+#     host: localhost
+#     state: present
+
+- name: Change default webroot
+  copy:
+    src: httpd.conf
+    dest: /etc/httpd/conf/httpd.conf
+
+- name: Start Web Server
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

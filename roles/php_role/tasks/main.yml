@@ -1,0 +1,28 @@
+---
+- name: Install PHP core and required modules
+  apt:
+    name: >
+      ['php{{ php_version }}', 
+      'php{{ php_version }}-curl',
+      'php{{ php_version }}-dom',
+      'php{{ php_version }}-fpm',
+      'php{{ php_version }}-gd',
+      'php{{ php_version }}-json',
+      'php{{ php_version }}-mbstring',
+      'php{{ php_version }}-mcrypt',
+      'php{{ php_version }}-mysql',
+      'php{{ php_version }}-pdo',
+      'php{{ php_version }}-zip']
+    state: present
+
+- name: Drop in PHPinfo for debug
+  copy:
+    src: phpinfo.php
+    dest: /var/www/html/index.php
+  notify: restart apache2
+
+- name: PHP service start
+  service:
+    name: "php{{ php_version }}-fpm"
+    state: started
+    enabled: yes

@@ -1,0 +1,13 @@
+---
+- name: Install Nextcloud
+  hosts: rpi4_bristol
+  remote_user: pi
+  become: true
+
+  roles:
+    - role: apache2
+    - role: php_role
+      vars:
+        php_version: 7.4
+    - role: mariadb
+    - role: nextcloud

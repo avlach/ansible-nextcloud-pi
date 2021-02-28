@@ -1,0 +1,11 @@
+---
+- name: Install MariaDB packages
+  apt:
+    name: ['mariadb-server', 'python-mysqldb', 'python3-pymysql']
+    state: latest
+
+- name: Start MariaDB Service
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
